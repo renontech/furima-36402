@@ -1,24 +1,62 @@
-# README
+# テーブル設計
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+## usersテーブル
 
-Things you may want to cover:
+| Column             | Type   | Option                                                                        |
+| ------------------ | ------ | ----------------------------------------------------------------------------- |
+| nickname           | string | null: false                                                                   |
+| email              | string | null: false, unique: true, match(/@.+/)                                       |
+| encrypted_password | string | null: false, unique: true, match(/\A(?=.*?[a-z])(?=.*?[\d])[a-z\d]+\z/{6,}/i) |
+| last_name          | string | null: false, match(/\A[ぁ-んァ-ヶ一-龥々ー]+\z/)                                 |
+| first_name         | string | null: false, match(/\A[ぁ-んァ-ヶ一-龥々ー]+\z/)                                 |
+| last_name_kana     | string | null: false, match(/\A[ァ-ヶー]+\z/)                                           |
+| first_name_kana    | string | null: false, match(/\A[ァ-ヶー]+\z/)                                           |
+| birthday           | date   | null: false                                                                   |
 
-* Ruby version
+### Association
 
-* System dependencies
+has_many: items
+has_one: buyer
 
-* Configuration
+## itemsテーブル
 
-* Database creation
+| Column        | Type       | Option                         |
+| ------------- | ---------- | ------------------------------ |
+| name          | string     | null: false                    |
+| description   | text       | null: false                    |
+| category      | integer    | null: false                    |
+| condition     | integer    | null: false                    |
+| shipping      | integer    | null: false                    |
+| ship_from     | integer    | null: false                    |
+| days_for_ship | integer    | null: false                    |
+| price         | integer    | null: false                    |
+| image         |            | null: false                    |
+| user_id       | references | null: false, foreign_key: true |
+| status_id     | integer    | null: false                    |
 
-* Database initialization
+### Association
 
-* How to run the test suite
+belongs_to: user
+has_one: buyer
 
-* Services (job queues, cache servers, search engines, etc.)
+## buyersテーブル
 
-* Deployment instructions
+| Column           | Type       | Option                                  |
+| ---------------- | ---------- | --------------------------------------- |
+| card_number      | integer    | null: false                             |
+| card_expirymonth | integer    | null: false                             |
+| card_expiryyear  | integer    | null: false                             |
+| card_cvc         | integer    | null: false                             |
+| postcode         | integer    | null: false, match(/\A\d{3}[-]\d{4}\z/) |
+| prefecture_id    | integer    | null: false                             |
+| city             | string     | null: false                             |
+| block            | string     | null: false                             |
+| building         | string     |                                         |
+| phone_number     | integer    | null: false, gsub(/-/,'')               |
+| user_id          | references | null: false, foreign_key: true          |
+| item_id          | references | null: false, foreign_key: true          |
 
-* ...
+### Association
+
+belongs_to: user
+belongs_to: item
