@@ -16,7 +16,7 @@
 ### Association
 
 has_many: items
-has_one: buyer
+has_many: buy_records
 
 ## itemsテーブル
 
@@ -36,7 +36,7 @@ has_one: buyer
 ### Association
 
 belongs_to: user
-has_one: buyer
+has_one: buy_record
 
 ## buyersテーブル
 
