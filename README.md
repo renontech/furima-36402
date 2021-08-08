@@ -2,16 +2,16 @@
 
 ## usersテーブル
 
-| Column             | Type   | Option                                                                               |
-| ------------------ | ------ | ------------------------------------------------------------------------------------ |
-| nickname           | string | null: false                                                                          |
-| email              | string | null: false, unique: true, match(/@.+/)                                              |
-| encrypted_password | string | null: false, unique: true, <!--match(/\A(?=.*?[a-z])(?=.*?[\d])[a-z\d]+\z/{6,}/i) -->|
-| last_name          | string | null: false, <!-- match(/\A[ぁ-んァ-ヶ一-龥々ー]+\z/) -->                               |
-| first_name         | string | null: false, <!-- match(/\A[ぁ-んァ-ヶ一-龥々ー]+\z/) -->                               |
-| last_name_kana     | string | null: false, <!-- match(/\A[ァ-ヶー]+\z/) -->                                         |
-| first_name_kana    | string | null: false, <!-- match(/\A[ァ-ヶー]+\z/) -->                                         |
-| birthday           | date   | null: false                                                                          |
+| Column             | Type   | Option                     |
+| ------------------ | ------ | -------------------------- |
+| nickname           | string | null: false                |
+| email              | string | null: false, unique: true, |
+| encrypted_password | string | null: false, unique: true, |
+| last_name          | string | null: false,               |
+| first_name         | string | null: false,               |
+| last_name_kana     | string | null: false,               |
+| first_name_kana    | string | null: false,               |
+| birthday           | date   | null: false                |
 
 ### Association
 
@@ -28,7 +28,7 @@ has_many: buy_records
 | condition_id  | integer    | null: false                    |
 | shipping_id   | integer    | null: false                    |
 | ship_from_id  | integer    | null: false                    |
-| ship_days_id  | integer    | null: false                    |
+| ship_day_id  | integer    | null: false                     |
 | price         | integer    | null: false                    |
 | user          | references | null: false, foreign_key: true |
 | status_id     | integer    | null: false                    |
@@ -38,7 +38,7 @@ has_many: buy_records
 belongs_to: user
 has_one: buy_record
 
-## buyersテーブル
+## buy_recordsテーブル
 
 | Column | Type       | Option                         |
 | ------ | ---------- | ------------------------------ |
