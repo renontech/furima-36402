@@ -49,3 +49,15 @@ has_one: buy_record
 
 belongs_to: user
 belongs_to: item
+
+## buyersテーブル
+
+| Column        | Type       | Options                        |
+| ------------- | ---------- | ------------------------------ |
+| postcode      | integer    | null: false                    |
+| prefecture_id | integer    | null: false                    |
+| city          | string     | null: false                    |
+| block         | string     | null: false                    |
+| building      | string     |                                |
+| phone_number  | integer    | null: false                    |
+| buy_record    | references | null: false, foreign_key: true |
