@@ -3,7 +3,6 @@ require 'rails_helper'
 RSpec.describe Item, type: :model do
   describe '新規出品機能' do
     before do
-      @user = FactoryBot.create(:user)
       @item = FactoryBot.build(:item)
     end
     context '出品できる時' do
@@ -91,10 +90,30 @@ RSpec.describe Item, type: :model do
         @item.valid?
         expect(@item.errors.full_messages).to include("Price must be less than or equal to 9999999")
       end
+      it 'priceが全角数字では出品できない' do
+        @item.price = "４５０"
+        @item.valid?
+        expect(@item.errors.full_messages).to include("Price is not a number")
+      end
+      it 'priceが半角英字のみでは保存できない' do
+        @item.price = "three thousand"
+        @item.valid?
+        expect(@item.errors.full_messages).to include("Price is not a number")
+      end
+      it 'priceが半角英数字混合では保存できない' do
+        @item.price = "three thousand 20"
+        @item.valid?
+        expect(@item.errors.full_messages).to include("Price is not a number")
+      end
       it 'imageが空では出品できない' do
         @item.image = nil
         @item.valid?
         expect(@item.errors.full_messages).to include("Image can't be blank")
+      end
+      it 'userが紐づいていなければ出品できない' do
+        @item.user = nil
+        @item.valid?
+        expect(@item.errors.full_messages).to include("User must exist")
       end
     end
   end
