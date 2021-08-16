@@ -2,6 +2,7 @@ class ItemsController < ApplicationController
   before_action :authenticate_user!, only: [:new, :create, :edit, :update, :destroy]
   before_action :item_find, only: [:show, :edit, :update, :destroy]
   before_action :acess_block, only: [:edit, :update, :destroy]
+  before_action :sold_block, only: [:edit, :update, :destroy]
 
   def index
     @items = Item.order('created_at DESC')
@@ -52,6 +53,12 @@ class ItemsController < ApplicationController
 
   def acess_block
     unless current_user.id == @item.user_id
+      redirect_to root_path
+    end
+  end
+
+  def sold_block
+    unless @item.buy_record.nil?
       redirect_to root_path
     end
   end
