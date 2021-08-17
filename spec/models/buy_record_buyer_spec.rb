@@ -41,6 +41,11 @@ RSpec.describe BuyRecordBuyer, type: :model do
         @buy_record_buyer.valid?
         expect(@buy_record_buyer.errors.full_messages).to include("Prefecture can't be blank")
       end
+      it 'prefecture_idが１では保存できない' do
+        @buy_record_buyer.prefecture_id = 1
+        @buy_record_buyer.valid?
+        expect(@buy_record_buyer.errors.full_messages).to include("Prefecture can't be blank")
+      end
       it 'cityが空では保存できない' do
         @buy_record_buyer.city = ''
         @buy_record_buyer.valid?
@@ -56,8 +61,28 @@ RSpec.describe BuyRecordBuyer, type: :model do
         @buy_record_buyer.valid?
         expect(@buy_record_buyer.errors.full_messages).to include("Phone number can't be blank")
       end
-      it 'phone_numberが「10桁以上11桁以内の半角数値」でないと保存できない' do
+      it 'phone_numberが11桁以上だと保存できない' do
         @buy_record_buyer.phone_number = '090123456789'
+        @buy_record_buyer.valid?
+        expect(@buy_record_buyer.errors.full_messages).to include("Phone number is invalid")
+      end
+      it 'phone_numberが10桁未満だと保存できない' do
+        @buy_record_buyer.phone_number = '090123456'
+        @buy_record_buyer.valid?
+        expect(@buy_record_buyer.errors.full_messages).to include("Phone number is invalid")
+      end
+      it 'phone_numberが数字のみでなく英字が含まれていると保存できない' do
+        @buy_record_buyer.phone_number = 'o9o12345678'
+        @buy_record_buyer.valid?
+        expect(@buy_record_buyer.errors.full_messages).to include("Phone number is invalid")
+      end
+      it 'phone_numberがハイフンを含んでいると保存できない' do
+        @buy_record_buyer.phone_number = '090-1234-5678'
+        @buy_record_buyer.valid?
+        expect(@buy_record_buyer.errors.full_messages).to include("Phone number is invalid")
+      end
+      it 'phone_numberが全角数値だと保存できない' do
+        @buy_record_buyer.phone_number = '０９０１２３４５６７８'
         @buy_record_buyer.valid?
         expect(@buy_record_buyer.errors.full_messages).to include("Phone number is invalid")
       end
@@ -65,6 +90,16 @@ RSpec.describe BuyRecordBuyer, type: :model do
         @buy_record_buyer.token = nil
         @buy_record_buyer.valid?
         expect(@buy_record_buyer.errors.full_messages).to include("Token can't be blank")
+      end
+      it 'user_idが紐づいていなければ保存できない' do
+        @buy_record_buyer.user_id = nil
+        @buy_record_buyer.valid?
+        expect(@buy_record_buyer.errors.full_messages).to include("User can't be blank")
+      end
+      it 'item_idが紐づいていなければ保存できない' do
+        @buy_record_buyer.item_id = nil
+        @buy_record_buyer.valid?
+        expect(@buy_record_buyer.errors.full_messages).to include("Item can't be blank")
       end
     end
   end
