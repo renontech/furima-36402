@@ -38,11 +38,6 @@ class BuyRecordsController < ApplicationController
   end
 
   def sold_block
-    unless @item.buy_record.nil?
-      redirect_to root_path
-    end
-    if current_user.id == @item.user_id
-      redirect_to root_path
-    end
+    redirect_to root_path if @item.buy_record.present? || current_user.id == @item.user_id
   end
 end
