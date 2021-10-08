@@ -2,11 +2,10 @@ require 'rails_helper'
 
 RSpec.describe BuyRecordBuyer, type: :model do
   describe '配送先情報の保存機能' do
+    user = FactoryBot.create(:user)
+    item = FactoryBot.create(:item)
     before do
-      user = FactoryBot.create(:user)
-      item = FactoryBot.create(:item)
       @buy_record_buyer = FactoryBot.build(:buy_record_buyer, user_id: user.id, item_id: item.id)
-      sleep 0.1
     end
     context '配送先情報の保存ができる時' do
       it '全ての項目が入力されていれば保存できる' do
